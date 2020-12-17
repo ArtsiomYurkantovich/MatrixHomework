@@ -27,7 +27,7 @@ namespace MatrixHomework
         // Method that prints out the commands list
         static void ShowCommands()
         {
-            Console.WriteLine("**** List of commands: ****");
+            ShowAttentionMsg("SELECT ONE OF THE COMMANDS!!!\n");
             Console.WriteLine($"{Clear} - Clear console content.");
             Console.WriteLine($"{Exit} - Exit the application.");
             Console.WriteLine($"{Info} - Show list of commands.");
@@ -40,6 +40,36 @@ namespace MatrixHomework
             Console.WriteLine($"{NumberOfNegative} - The number of negative numbers in the matrix.");
             Console.WriteLine($"{ NumberOfPositive} - The number of posotive numbers in the matrix.");
         }
+        static void ShowAttentionMsg(params string[] msgs)
+        {
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            foreach (var msg in msgs)
+            {
+                Console.WriteLine(msg);
+            }
+            Console.ForegroundColor = ConsoleColor.White;
+        }
+
+        static void ShowErrorMsg(params string[] msgs)
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            foreach (var msg in msgs)
+            {
+                Console.WriteLine($"Error: {msg}");
+            }
+            Console.ForegroundColor = ConsoleColor.White;
+        }
+
+        static void ShowMatrixColor(params string[] msgs)
+        {
+            Console.ForegroundColor = ConsoleColor.Magenta;
+            foreach (var msg in msgs)
+            {
+                Console.Write($"\t{msg}\t");
+            }
+            Console.ForegroundColor = ConsoleColor.White;
+        }
+       
         static void ClearDisplay()
         {
             Console.Clear();
@@ -49,20 +79,20 @@ namespace MatrixHomework
         {
             try
             {
-                Console.Write("Enter please number of matrix columns: ");
+                ShowAttentionMsg("Enter please number of matrix columns: ");
                 while (!ulong.TryParse(Console.ReadLine(), out cols))
                 {
-                    Console.Write("Enter please correct number of matrix columns: ");
+                    ShowErrorMsg("Enter please correct number of matrix columns: ");
                 }
 
-                Console.Write("Enter please number of matrix rows: ");
+                ShowAttentionMsg("Enter please number of matrix rows: ");
                 while (!ulong.TryParse(Console.ReadLine(), out rows))
                 {
-                    Console.Write("Enter please correct number of matrix rows: ");
+                    ShowErrorMsg("Enter please correct number of matrix rows: ");
                 }
 
                 matrix = new double[rows, cols];
-                Console.WriteLine("Enter fill int the matrix: ");
+                ShowAttentionMsg("Enter fill int the matrix: ");
 
                 for (int i = 0; i < matrix.GetLength(0); i++)
                 {
@@ -74,7 +104,7 @@ namespace MatrixHomework
 
                         while (!double.TryParse(Console.ReadLine(), NumberStyles.Float, CultureInfo.InvariantCulture, out matrix[i, j]))
                         {
-                            Console.WriteLine("Enter please correct numbers of matrix: ");
+                            ShowErrorMsg("Enter please correct numbers of matrix: ");
                         }
                     }
                 }
@@ -86,7 +116,7 @@ namespace MatrixHomework
                 {
                     for (int j = 0; j < matrix.GetLength(1); j++)
                     {
-                        Console.Write($"{matrix[i, j]}\t");
+                        ShowMatrixColor($"{matrix[i, j]}");
                     }
                     Console.WriteLine();
                 }
@@ -94,7 +124,7 @@ namespace MatrixHomework
             catch
             {
                 Console.WriteLine();
-                Console.WriteLine("Think before entering the dimension!");
+                ShowErrorMsg("Think before entering the dimension!");
 
                 EnterMatrix();
             }
@@ -144,15 +174,15 @@ namespace MatrixHomework
                     }
                 }
             }
-           
-            Console.WriteLine("Matrix after sorting descending order:");
+
+            ShowAttentionMsg("Matrix after sorting descending order:");
             for (int i = 0; i < matrix.GetLength(0); i++)
             {
                 for (int j = 0; j < matrix.GetLength(1); j++)
                 {
-                    Console.Write($"{matrix[i, j]}\t");
+                    ShowMatrixColor($"{matrix[i, j]}");
                 }
-                Console.WriteLine(); ;
+                Console.WriteLine();
             }
         }
 
@@ -182,15 +212,15 @@ namespace MatrixHomework
             }
 
             // Output matrix after ascending order sorting
-          
-            Console.WriteLine("Matrix after sorting ascending order:");
+
+            ShowAttentionMsg("Matrix after sorting ascending order:");
             for (int i = 0; i < matrix.GetLength(0); i++)
             {
                 for (int j = 0; j < matrix.GetLength(1); j++)
                 {
-                    Console.Write($"{matrix[i, j]}\t");
+                    ShowMatrixColor($"{matrix[i, j]}");
                 }
-                Console.WriteLine(); ;
+                Console.WriteLine(); 
             }
         }
 
@@ -219,12 +249,12 @@ namespace MatrixHomework
 
             // Output matrix after inversion
 
-            Console.WriteLine("Matrix after inversion: ");
+            ShowAttentionMsg("Matrix after inversion: ");
             for (int i = 0; i < matrix.GetLength(0); i++)
             {
                 for (int j = 0; j < matrix.GetLength(1); j++)
                 {
-                    Console.Write($"{matrix[i, j]}\t");
+                    ShowMatrixColor($"{matrix[i, j]}\t");
                 }
                 Console.WriteLine();
             }
@@ -250,12 +280,12 @@ namespace MatrixHomework
             if (maxPositive > 0)
             {
                 Console.WriteLine();
-                Console.WriteLine($"Maximum positive number in the matrix= {maxPositive}");
+                ShowMatrixColor($"Maximum positive number in the matrix= {maxPositive}\n");
             }
            
             else
             {
-                Console.WriteLine("There aren't posotive numbers in the matrix.");
+                ShowErrorMsg("There aren't posotive numbers in the matrix.");
             }
         }
 
@@ -278,12 +308,12 @@ namespace MatrixHomework
             if (maxNegative < 0)
             {
                 Console.WriteLine();
-                Console.WriteLine($"Minimum negative number in the matrix = {maxNegative}");
+                ShowMatrixColor($"Minimum negative number in the matrix = {maxNegative}\n");
             }
             
             else
             {
-                Console.WriteLine("There aren't negative numbers in the matrix.");
+                ShowErrorMsg("There aren't negative numbers in the matrix.");
             }
         }
 
@@ -310,12 +340,12 @@ namespace MatrixHomework
             if (negNumb < 0)
             {
                 Console.WriteLine();
-                Console.WriteLine($"The number of positive numbers in the matrix = {negativeNumber}");
+                ShowMatrixColor($"The number of positive numbers in the matrix = {negativeNumber}\n");
             }
            
             else
             {
-                Console.WriteLine("There aren't posotive numbers in the matrix.");
+                ShowErrorMsg("There aren't posotive numbers in the matrix.");
             }
         }
 
@@ -340,12 +370,12 @@ namespace MatrixHomework
             if (positiveNumber > 0)
             {
                 Console.WriteLine();
-                Console.WriteLine($"The number of positive numbers in the matrix = {positiveNumber}");
+                ShowMatrixColor($"The number of positive numbers in the matrix = {positiveNumber}\n");
             }
            
             else
             {
-                Console.WriteLine("There aren't posotive numbers in the matrix.");
+                ShowErrorMsg("There aren't posotive numbers in the matrix.");
             }
         }
 
@@ -354,7 +384,7 @@ namespace MatrixHomework
         static void ApplyCommand()
         {
             Console.WriteLine();
-            Console.Write("> ");
+            ShowAttentionMsg("> ");
             string command = Console.ReadLine().ToLower();
             switch (command)
             {
@@ -393,26 +423,22 @@ namespace MatrixHomework
                     ClearDisplay();
                     break;
                 default:
-                    Console.WriteLine("Error! Please enter command at list information");
-                    Console.WriteLine();
-                    ShowCommands();
+                    ShowErrorMsg("Please enter command at list information\n");
                     break;
             }
+
         }
-        
+
         static void RunApplication()
         {
-            ShowCommands();
-            Console.WriteLine();
-
             EnterMatrix();
-            Console.WriteLine();
-            Console.WriteLine("SELECT ONE OF THE COMMANDS!!!");
+           
 
             // While RequestExit = false perform method ApplyCommand
 
             while (!RequestedExit)
             {
+                ShowCommands();
                 ApplyCommand();
             }
         }
