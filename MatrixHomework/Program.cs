@@ -4,45 +4,44 @@ using System.Globalization;
 
 namespace MatrixHomework
 {
+    enum Options
+    {
+        Add = 1,
+        SortDescending,
+        SortAscending,
+        Inversion,
+        SearchPositive,
+        SearchNegative,
+        NumberOfNegative,
+        NumberOfPositive,
+        RequestedExit,
+        Clear = 9,
+        Exit
+    }
     class Program
     {
         private static ulong cols ;
         private static ulong rows;
         private static double[,] matrix;
-
-        private const string Clear = "clear";
-        private const string Exit = "exit";
-        private const string Info = "info";
-        private const string Add = "add";
-        private const string SortDescending = "desc";
-        private const string SortAscending = "ascen";
-        private const string Inversion = "invers";
-        private const string SearchPositive = "pos";
-        private const string SearchNegative = "neg";
-        private const string NumberOfNegative = "numneg";
-        private const string NumberOfPositive = "numpos";
         private static bool RequestedExit;
-
-
         // Method that prints out the commands list
         static void ShowCommands()
         {
-            ShowAttentionMsg("SELECT ONE OF THE COMMANDS!!!\n");
-            Console.WriteLine($"{Clear} - Clear console content.");
-            Console.WriteLine($"{Exit} - Exit the application.");
-            Console.WriteLine($"{Info} - Show list of commands.");
-            Console.WriteLine($"{Add} - Add a matrix.");
-            Console.WriteLine($"{SortDescending} - Sort matrix in descending order.");
-            Console.WriteLine($"{SortAscending} - Sort matrix in ascending order.");
-            Console.WriteLine($"{Inversion} - Matrix inversion.");
-            Console.WriteLine($"{SearchPositive} - Finding the maximum positive number.");
-            Console.WriteLine($"{SearchNegative} - Finding the maximum negative number.");
-            Console.WriteLine($"{NumberOfNegative} - The number of negative numbers in the matrix.");
-            Console.WriteLine($"{ NumberOfPositive} - The number of posotive numbers in the matrix.");
+            ShowAttentionMsg(
+                $"1) {Options.Add} - Add a matrix.",
+                $"2) {Options.SortDescending} - Sort matrix in descending order.",
+                $"3) {Options.SortAscending} - Sort matrix in ascending order.",
+                $"4) {Options.Inversion} - Matrix inversion.",
+                $"5) {Options.SearchPositive} - Finding the maximum positive number.",
+                $"6) {Options.SearchNegative} - Finding the maximum negative number.",
+                $"7) {Options.NumberOfNegative} - The number of negative numbers in the matrix.",
+                $"8) {Options.NumberOfPositive} - The number of posotive numbers in the matrix.",
+                $"9) {Options.Clear} - Clear console content.",
+                $"10) {Options.Exit} - Exit the application.");
         }
         static void ShowAttentionMsg(params string[] msgs)
         {
-            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.ForegroundColor = ConsoleColor.Yellow ;
             foreach (var msg in msgs)
             {
                 Console.WriteLine(msg);
@@ -60,20 +59,10 @@ namespace MatrixHomework
             Console.ForegroundColor = ConsoleColor.White;
         }
 
-        static void ShowMatrixColor(params string[] msgs)
-        {
-            Console.ForegroundColor = ConsoleColor.Magenta;
-            foreach (var msg in msgs)
-            {
-                Console.Write($"\t{msg}\t");
-            }
-            Console.ForegroundColor = ConsoleColor.White;
-        }
        
         static void ClearDisplay()
         {
             Console.Clear();
-            ShowCommands();
         }
         static void EnterMatrix()
         {
@@ -111,19 +100,10 @@ namespace MatrixHomework
 
                 // Matrix output
 
-                Console.WriteLine();
-                for (int i = 0; i < matrix.GetLength(0); i++)
-                {
-                    for (int j = 0; j < matrix.GetLength(1); j++)
-                    {
-                        ShowMatrixColor($"{matrix[i, j]}");
-                    }
-                    Console.WriteLine();
-                }
+                Show(matrix);
             }
             catch
             {
-                Console.WriteLine();
                 ShowErrorMsg("Think before entering the dimension!");
 
                 EnterMatrix();
@@ -176,16 +156,22 @@ namespace MatrixHomework
             }
 
             ShowAttentionMsg("Matrix after sorting descending order:");
+            Show(matrix);
+        }
+
+       static void  Show(double[,] matrix)
+        {
+            Console.ForegroundColor = ConsoleColor.Magenta;
             for (int i = 0; i < matrix.GetLength(0); i++)
             {
                 for (int j = 0; j < matrix.GetLength(1); j++)
                 {
-                    ShowMatrixColor($"{matrix[i, j]}");
+                    Console.Write($"{matrix[i, j]}\t");
                 }
                 Console.WriteLine();
             }
+            Console.ForegroundColor = ConsoleColor.White;
         }
-
         //Sort matrix in ascending order
 
         static void SortAscendingMatrix()
@@ -214,14 +200,7 @@ namespace MatrixHomework
             // Output matrix after ascending order sorting
 
             ShowAttentionMsg("Matrix after sorting ascending order:");
-            for (int i = 0; i < matrix.GetLength(0); i++)
-            {
-                for (int j = 0; j < matrix.GetLength(1); j++)
-                {
-                    ShowMatrixColor($"{matrix[i, j]}");
-                }
-                Console.WriteLine(); 
-            }
+            Show(matrix);
         }
 
         // Matrix inversion
@@ -250,14 +229,7 @@ namespace MatrixHomework
             // Output matrix after inversion
 
             ShowAttentionMsg("Matrix after inversion: ");
-            for (int i = 0; i < matrix.GetLength(0); i++)
-            {
-                for (int j = 0; j < matrix.GetLength(1); j++)
-                {
-                    ShowMatrixColor($"{matrix[i, j]}\t");
-                }
-                Console.WriteLine();
-            }
+            Show(matrix);
         }
 
         //Finding the maximum positive number
@@ -276,13 +248,11 @@ namespace MatrixHomework
                     }
                 }
             }
-            
+
             if (maxPositive > 0)
             {
-                Console.WriteLine();
-                ShowMatrixColor($"Maximum positive number in the matrix= {maxPositive}\n");
+                ShowAttentionMsg($"Maximum positive number in the matrix= {maxPositive}\n");
             }
-           
             else
             {
                 ShowErrorMsg("There aren't posotive numbers in the matrix.");
@@ -304,13 +274,11 @@ namespace MatrixHomework
                     }
                 }
             }
-           
+
             if (maxNegative < 0)
             {
-                Console.WriteLine();
-                ShowMatrixColor($"Minimum negative number in the matrix = {maxNegative}\n");
+                ShowAttentionMsg($"Minimum negative number in the matrix = {maxNegative}\n");
             }
-            
             else
             {
                 ShowErrorMsg("There aren't negative numbers in the matrix.");
@@ -339,14 +307,13 @@ namespace MatrixHomework
 
             if (negNumb < 0)
             {
-                Console.WriteLine();
-                ShowMatrixColor($"The number of positive numbers in the matrix = {negativeNumber}\n");
+                ShowAttentionMsg($"The number of negative numbers in the matrix = {negativeNumber}\n");
             }
-           
             else
             {
-                ShowErrorMsg("There aren't posotive numbers in the matrix.");
+                ShowErrorMsg("There aren't negative numbers in the matrix.");
             }
+
         }
 
         //The number of posotive numbers in the matrix
@@ -366,80 +333,93 @@ namespace MatrixHomework
                     }
                 }
             }
-           
+
             if (positiveNumber > 0)
             {
-                Console.WriteLine();
-                ShowMatrixColor($"The number of positive numbers in the matrix = {positiveNumber}\n");
+                ShowAttentionMsg($"The number of positive numbers in the matrix = {positiveNumber}\n");
             }
-           
             else
             {
                 ShowErrorMsg("There aren't posotive numbers in the matrix.");
             }
+           
         }
 
         // Methode implements basic commands
-
-        static void ApplyCommand()
+        static void WaitForCommand()
         {
-            Console.WriteLine();
             ShowAttentionMsg("> ");
-            string command = Console.ReadLine().ToLower();
-            switch (command)
+            int command;
+
+            while (!int.TryParse(Console.ReadLine(), out command))
             {
-                case Info:
-                    ShowCommands();
-                    break;
-               
-                case Add:
-                    EnterMatrix();
-                    break;
-                case Exit:
-                    RequestedExit = true;
-                    break;
-                case SortDescending:
-                    SortDescendingMatrix();
-                    break;
-                case SortAscending:
-                    SortAscendingMatrix();
-                    break;
-                case Inversion:
-                    InversionMatrix();
-                    break;
-                case SearchPositive:
-                    SearchPositiveNumber();
-                    break;
-                case SearchNegative:
-                    SearchNegativeNumber();
-                    break;
-                case NumberOfNegative:
-                    NumberOfNegativeNumbers();
-                    break;
-                case NumberOfPositive:
-                    NumberOfPositiveNumbers();
-                    break;
-                case Clear:
-                    ClearDisplay();
-                    break;
-                default:
-                    ShowErrorMsg("Please enter command at list information\n");
-                    break;
+                ShowErrorMsg($"Command:{command} doesn't exist\n");
             }
 
+            ApplyCommand(command);
+        }
+        static void ApplyCommand(int command)
+        {
+            
+            switch ((Options)command)
+            {
+               
+                case Options.Add:
+                    EnterMatrix();
+                    break;
+                
+                case Options.SortDescending:
+                    SortDescendingMatrix();
+                    break;
+
+                case Options.SortAscending:
+                    SortAscendingMatrix();
+                    break;
+
+                case Options.Inversion:
+                    InversionMatrix();
+                    break;
+
+                case Options.SearchPositive:
+                    SearchPositiveNumber();
+                    break;
+
+                case Options.SearchNegative:
+                    SearchNegativeNumber();
+                    break;
+
+                case Options.NumberOfNegative:
+                    NumberOfNegativeNumbers();
+                    break;
+
+                case Options.NumberOfPositive:
+                    NumberOfPositiveNumbers();
+                    break;
+
+                case Options.Clear:
+                    ClearDisplay();
+                    break;
+
+                case Options.Exit:
+                    RequestedExit = true;
+                    break;
+
+                default:
+                    ShowErrorMsg($"Command:{command} doesn't exist\n");
+                    break;
+            }
         }
 
         static void RunApplication()
         {
             EnterMatrix();
-           
 
             // While RequestExit = false perform method ApplyCommand
 
             while (!RequestedExit)
             {
                 ShowCommands();
-                ApplyCommand();
+                WaitForCommand();
             }
         }
         static void Main(string[] args)
