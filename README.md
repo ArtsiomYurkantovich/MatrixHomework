@@ -1,5 +1,4 @@
 # MatrixHomework
-MatrixHomework
 The task of this project was to write the following methods without using the methods of the array class:
  1) Add - Add a matrix.
  2) SortDescending - Sort matrix in descending order.
